@@ -27,7 +27,7 @@ self.addEventListener("fetch", (event) => {
     if (event.request.mode === "navigate") {
         event.respondWith(
             fetch(event.request).catch(() => 
-                caches.match(event.request).then(resp => resp || caches.match())
+                caches.match("index.html")
             )
         );
     } else {
@@ -40,7 +40,7 @@ self.addEventListener("fetch", (event) => {
                             cache.put(event.request, response.clone());
                             return response;
                         });
-                    })
+                    }).catch(() => caches.match(event.request))
                 );
             })
         );
